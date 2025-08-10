@@ -3,12 +3,13 @@ import Header from './Header'
 import { checkValidateData } from '../utils/validate';
 import {auth } from "../utils/firebase"
 import { getAuth, createUserWithEmailAndPassword ,signInWithEmailAndPassword,updateProfile  } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { HOME_PAGE_BACKGROUND, PHOTO_URL } from '../utils/constants';
 
 const Login = () => {
-  const navigate=useNavigate();
+  
   const [isSignInForm,setisSignInForm]=useState(true);
   const [errorMessage,setErrorMessage]=useState(null);
   const name=useRef(null);
@@ -35,11 +36,11 @@ const Login = () => {
     // Signed up 
     const user = userCredential.user;
     updateProfile(user, {
-      displayName: name.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
+      displayName: name.current.value, photoURL: PHOTO_URL
     }).then(() => {
       const {uid,email,displayName}=auth.currentUser;
       dispatch(addUser({uid:uid,email:email,displayName:displayName}))
-      navigate("/browse")
+      
       // Profile updated!
       // ...
     }).catch((error) => {
@@ -67,7 +68,7 @@ const Login = () => {
     const {uid,email,displayName}=auth.currentUser;
     dispatch(addUser({uid:uid,email:email,displayName:displayName}))
     
-    navigate("/browse")
+    
     // ...
   })
   .catch((error) => {
@@ -84,7 +85,7 @@ const Login = () => {
       
       <div className='absolute inset-0'>
         <img 
-          src='https://assets.nflxext.com/ffe/siteui/vlv3/75b0ed49-75ab-4a63-bd45-37bc2c95cb73/web/IN-en-20250623-TRIFECTA-perspective_ae5833b7-6ce5-4e88-853e-014f38c506f1_large.jpg'
+          src={HOME_PAGE_BACKGROUND}
           alt='background'
           className='h-full w-full object-cover'
         />
